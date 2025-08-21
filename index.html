@@ -1,190 +1,117 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es" data-theme="light">
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tester de Componentes Tailwind & Chakra UI - Edición Vibrante</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Tester de Componentes - Anclora UI</title>
+    <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tipografías de marca -->
+    <link href="https://fonts.googleapis.com/css?family=Space+Grotesk:500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
+    <!-- Iconos Heroicons para el diseño -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      html {
+        font-family: 'Inter', Arial, sans-serif;
+      }
+      h1, .anclora-logo { font-family: 'Space Grotesk', Arial, sans-serif; letter-spacing: .025em;}
+      .anclora-bg {
+        background: linear-gradient(135deg, #0AD1C8 0%, #45DFB1 67%, #80ED99 100%);
+      }
+      [data-theme="dark"] .anclora-bg { background: linear-gradient(135deg, #213A57 0%, #0B6477 67%, #14919B 100%);}
+    </style>
+  </head>
+  <body class="anclora-bg min-h-screen flex flex-col">
+    <!-- Header fijo y brand switch -->
+    <header class="w-full sticky top-0 z-20 bg-white/70 dark:bg-[#0b6477]/80 backdrop-blur border-b border-brand-300 flex items-center justify-between px-4 py-2">
+      <span class="anclora-logo text-2xl sm:text-3xl font-semibold text-brand-700 dark:text-brand-200 tracking-widest flex items-center gap-2">
+        <svg class="w-8 h-8 text-[#0AD1C8]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><!-- glyph --><circle cx="12" cy="12" r="9"/><path d="M8 15l6-6M12 8v8"/></svg>
+        ANCLORA
+      </span>
+      <button id="colorThemeBtn" class="ml-auto flex gap-2 items-center bg-white/80 dark:bg-brand-700 border rounded-xl py-1 px-2 shadow hover:scale-105 transition" aria-label="Cambiar tema">
+        <span class="hidden sm:inline text-sm font-medium">Tema</span>
+        <svg id="iconTheme" class="h-6 w-6 text-brand-600 dark:text-brand-300" fill="none"></svg>
+      </button>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 w-full max-w-5xl mx-auto flex flex-col sm:flex-row gap-6 p-2 sm:p-4">
+      <!-- Editor de código (mobile-first, arriba en mobile, izda en desktop) -->
+      <section class="basis-1/2 bg-white/30 dark:bg-[#213A57]/60 backdrop-blur-md shadow-lg rounded-2xl p-4 flex flex-col mb-2 sm:mb-0">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-semibold text-brand-700 dark:text-brand-200 flex items-center gap-1">
+            <i data-feather="edit-3" class="w-5 h-5"></i>
+            Editor de Código
+          </h2>
+          <span id="charCount" class="bg-brand-400/80 text-white text-xs font-semibold rounded px-2 py-1">
+            0 caracteres
+          </span>
+        </div>
+        <textarea id="codeEditor"
+          class="w-full min-h-[8rem] sm:min-h-[14rem] h-40 p-3 mb-3 rounded-xl bg-white/40 dark:bg-[#081B1B]/60 text-brand-700 dark:text-brand-200 shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-400 transition"
+          placeholder="Pega aquí tu código HTML, Tailwind o componentes Chakra…"></textarea>
+        <div class="flex flex-col sm:flex-row gap-3 mb-2">
+          <button id="testBtn" class="flex-1 bg-gradient-to-r from-brand-500 to-brand-200 text-white font-bold py-2 rounded-full shadow-lg hover:brightness-110 hover:scale-105 transition">Probar componente</button>
+          <button id="clearBtn" class="flex-1 bg-white/80 dark:bg-brand-600/70 text-brand-700 dark:text-white font-semibold py-2 rounded-full shadow hover:bg-brand-300/60 transition">Limpiar</button>
+        </div>
+        <div class="flex gap-3">
+          <button id="tailwindExampleBtn" class="flex-1 bg-brand-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-brand-500 transition-all duration-150">Tailwind Example</button>
+          <button id="chakraExampleBtn" class="flex-1 bg-brand-400 text-white font-semibold py-2 rounded-lg shadow hover:bg-brand-300 transition-all duration-150">Chakra Example</button>
+        </div>
+      </section>
+      <!-- Vista Previa -->
+      <section class="basis-1/2 bg-white/30 dark:bg-[#213A57]/60 backdrop-blur-md shadow-lg rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-semibold text-brand-700 dark:text-brand-200 flex items-center gap-1">
+            <i data-feather="eye" class="w-5 h-5"></i>
+            Vista Previa
+          </h2>
+          <span id="frameworkBadge" class="bg-brand-600/90 text-white text-xs font-semibold rounded px-2 py-1">Ningún framework</span>
+        </div>
+        <!-- Contenedor preview -->
+        <div class="w-full flex-1 flex flex-col items-center justify-center min-h-[8rem] sm:min-h-[14rem]">
+          <div id="previewStatus" class="text-center w-full flex flex-col items-center justify-center">
+            <svg class="w-14 h-14 text-brand-300 mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <h3 class="text-xl font-bold text-brand-700 dark:text-brand-100 mb-1">¡Listo para crear!</h3>
+            <p class="text-brand-700/70 dark:text-brand-200/80 text-base">Ingresa código en el editor para ver la magia aquí ✨</p>
+          </div>
+          <iframe id="previewFrame" class="w-full mt-4 min-h-[120px] rounded-lg border-0 shadow-inner bg-white/50 dark:bg-brand-800/60 transition"></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer class="max-w-5xl mx-auto w-full text-center py-2 text-xs text-brand-700/70 dark:text-brand-200/70">
+      <span>Hecho con ❤️ y precisión por Anclora · <a href="https://anclora.tech" class="underline" target="_blank" rel="noopener">anclora.tech</a></span>
+    </footer>
+
+    <!-- Script de cambio light/dark (sin frameworks externos) -->
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'custom': {
-                            'navy': '#213A57',
-                            'teal-dark': '#0B6477',
-                            'teal-mid': '#14919B', 
-                            'cyan': '#0AD1C8',
-                            'mint': '#45DFB1',
-                            'lime': '#80ED99'
-                        }
-                    },
-                    backgroundImage: {
-                        'hero': 'linear-gradient(135deg, #80ED99 0%, #0AD1C8 50%, #213A57 100%)',
-                        'header': 'linear-gradient(135deg, #213A57 0%, #45DFB1 100%)',
-                        'button': 'linear-gradient(135deg, #0AD1C8 0%, #45DFB1 100%)',
-                        'button-secondary': 'linear-gradient(135deg, #14919B 0%, #0B6477 100%)',
-                        'card-header': 'linear-gradient(135deg, #14919B 0%, #45DFB1 100%)'
-                    },
-                    boxShadow: {
-                        'glow-cyan': '0 0 20px rgba(10, 209, 200, 0.3)',
-                        'glow-mint': '0 0 20px rgba(69, 223, 177, 0.3)',
-                        'glow-lime': '0 0 20px rgba(128, 237, 153, 0.3)'
-                    },
-                    animation: {
-                        'border-flow': 'border-flow 3s ease-in-out infinite',
-                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-                        'float': 'float 3s ease-in-out infinite'
-                    }
-                }
-            }
-        }
+      // tema brand tailwind
+      const themeBtn = document.getElementById('colorThemeBtn');
+      const iconTheme = document.getElementById('iconTheme');
+      function setTheme(dark) {
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        iconTheme.innerHTML = dark
+          ? '<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path d=\"M17.293 13.293a8 8 0 01-11.314-11.314A8.001 8.001 0 0020 10a8.001 8.001 0 01-2.707 3.293z\"/></svg>'
+          : '<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 3v1m0 16v1m8-9h1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707\"/></svg>';
+      }
+      function toggleTheme() {
+        const dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+        setTheme(dark);
+        localStorage.setItem('anklora-theme', dark ? 'dark' : 'light');
+      }
+      themeBtn.onclick = toggleTheme;
+      // Load theme user pref
+      (function() {
+        const saved = localStorage.getItem('anklora-theme');
+        if(saved) setTheme(saved === 'dark');
+        else setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      })();
+      // Iconos
+      feather.replace();
     </script>
-</head>
-<body class="bg-hero min-h-screen">
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="container flex items-center justify-between">
-                <div class="header-title">
-                    <h1 class="text-white text-2xl font-bold drop-shadow-lg">
-                        ⚡ Tester de Componentes
-                    </h1>
-                    <p class="text-white/80 text-sm mt-1">Tailwind & Chakra UI - Edición Vibrante</p>
-                </div>
-                <div class="framework-indicator">
-                    <div id="frameworkBadge" class="framework-badge">
-                        <span class="badge-icon">🔍</span>
-                        <span class="badge-text">Ningún framework detectado</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="container">
-                <div class="editor-layout">
-                    <!-- Panel Editor -->
-                    <div class="editor-panel">
-                        <div class="glass-card">
-                            <div class="card-header">
-                                <div class="header-content">
-                                    <h2 class="text-white font-bold text-lg">📝 Editor de Código</h2>
-                                    <div class="char-counter">
-                                        <span id="charCount">0</span> caracteres
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="code-editor-container">
-                                    <textarea 
-                                        id="codeEditor" 
-                                        class="code-textarea"
-                                        placeholder="¡Pega aquí tu código HTML con clases Tailwind o componentes Chakra UI!
-                                        
-🚀 Ejemplo rápido:
-<button class=&quot;bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-yellow-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200&quot;>
-  ¡Botón Mágico! ✨
-</button>"
-                                        spellcheck="false"
-                                    ></textarea>
-                                    <div class="syntax-highlight-overlay"></div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="button-group">
-                                    <button id="testBtn" class="btn-primary">
-                                        <span class="btn-icon">⚡</span>
-                                        Probar Componente
-                                    </button>
-                                    <button id="clearBtn" class="btn-outline">
-                                        <span class="btn-icon">🗑️</span>
-                                        Limpiar
-                                    </button>
-                                </div>
-                                <div class="button-group examples-group">
-                                    <button id="tailwindExampleBtn" class="btn-secondary">
-                                        <span class="btn-icon">🎨</span>
-                                        Ejemplo Tailwind
-                                    </button>
-                                    <button id="chakraExampleBtn" class="btn-secondary">
-                                        <span class="btn-icon">⚛️</span>
-                                        Ejemplo Chakra
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Panel Vista Previa -->
-                    <div class="preview-panel">
-                        <div class="glass-card">
-                            <div class="card-header">
-                                <div class="header-content">
-                                    <h2 class="text-white font-bold text-lg">👁️ Vista Previa</h2>
-                                    <div class="status-indicator">
-                                        <span id="previewStatus" class="preview-status">Listo</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div id="previewFrame" class="preview-frame">
-                                    <div class="preview-placeholder">
-                                        <div class="placeholder-content">
-                                            <div class="placeholder-icon">
-                                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-float">
-                                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                                                </svg>
-                                            </div>
-                                            <h3 class="text-xl font-bold text-white mb-2">¡Listo para crear!</h3>
-                                            <p class="text-white/70">Ingresa código en el editor para ver la magia aquí ✨</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Error Modal -->
-        <div id="errorModal" class="modal hidden">
-            <div class="modal-backdrop">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title">
-                            <span class="error-icon">⚠️</span>
-                            <h3>Error de Código</h3>
-                        </div>
-                        <button id="closeErrorModal" class="modal-close">✕</button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="errorMessage">Ha ocurrido un error al procesar el código.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="dismissErrorBtn" class="btn-primary btn-sm">
-                            <span class="btn-icon">👍</span>
-                            Entendido
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay hidden">
-            <div class="loading-spinner">
-                <div class="spinner-ring"></div>
-                <div class="spinner-ring"></div>
-                <div class="spinner-ring"></div>
-                <p class="loading-text">Procesando tu código...</p>
-            </div>
-        </div>
-    </div>
-
+    <!-- Tu JS de funcionalidad, mantiene integración Tailwind/Chakra -->
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
