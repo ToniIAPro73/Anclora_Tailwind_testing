@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester de Componentes - Anclora UI</title>
+    <!-- Tailwind CDN con configuración optimizada -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            700: '#213A57',
+                            600: '#0B6477',
+                            500: '#14919B',
+                            400: '#0AD1C8',
+                            300: '#45DFB1',
+                            200: '#80ED99'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        brand: ['Space Grotesk', 'system-ui', 'sans-serif']
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '88': '22rem'
+                    },
+                    minHeight: {
+                        'touch': '44px'
+                    },
+                    minWidth: {
+                        'touch': '44px'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Tipografías optimizadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* Mobile-first CSS */
+        html { font-family: 'Inter', sans-serif; }
+        .brand-font { font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.025em; }
+        
+        /* Gradientes marca Anclora */
+        .anclora-bg { 
+            background: linear-gradient(135deg, #0AD1C8 0%, #45DFB1 50%, #80ED99 100%);
+        }
+        .anclora-bg-dark { 
+            background: linear-gradient(135deg, #213A57 0%, #0B6477 50%, #14919B 100%);
+        }
+        
+        /* Glass effect responsive */
+        .glass-card { 
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        [data-theme="dark"] .glass-card {
+            background: rgba(33, 58, 87, 0.75);
+            border: 1px solid rgba(11, 100, 119, 0.3);
+        }
+        
+        /* Touch-optimized buttons */
+        .btn-touch {
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Responsive text sizes */
+        .text-responsive-lg { font-size: 1.125rem; }
+        @media (min-width: 640px) { .text-responsive-lg { font-size: 1.25rem; } }
+        @media (min-width: 768px) { .text-responsive-lg { font-size: 1.5rem; } }
+        
+        /* Focus states accesibles */
+        .focus-ring:focus {
+            outline: 2px solid #0AD1C8;
+            outline-offset: 2px;
+        }
+        
+        /* Animaciones suaves */
+        .transition-smooth { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+
+<body class="anclora-bg dark:anclora-bg-dark min-h-screen transition-smooth">
+    <!-- Header sticky mobile-optimized -->
+    <header class="sticky top-0 z-20 glass-card border-b border-brand-300/30">
+        <div class="px-3 py-2 sm:px-4 sm:py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo responsive -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-brand-400 to-brand-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M8 15l6-6M12 8v8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg md:text-xl font-bold text-brand-700 dark:text-brand-200 brand-font">ANCLORA</h1>
+                        <p class="text-xs text-brand-600 dark:text-brand-300 hidden sm:block">Tester de Componentes</p>
+                    </div>
+                </div>
+                
+                <!-- Theme toggle touch-optimized -->
+                <button id="colorThemeBtn" 
+                        class="btn-touch flex items-center gap-1 sm:gap-2 bg-white/80 dark:bg-brand-600/80 border border-brand-300 rounded-lg sm:rounded-xl px-2 py-1 sm:px-3 sm:py-2 shadow-sm hover:scale-105 transition-smooth focus-ring"
+                        aria-label="Cambiar tema">
+                    <span class="text-xs sm:text-sm font-medium text-brand-700 dark:text-brand-200 hidden sm:inline">Tema</span>
+                    <svg id="iconTheme" class="h-4 w-4 sm:h-5 sm:w-5 text-brand-600 dark:text-brand-300" fill="none"></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content mobile-first layout -->
+    <main class="flex-1 w-full max-w-6xl mx-auto p-3 sm:p-4 md:p-6">
+        <!-- Mobile: stack vertical, Tablet+: side by side -->
+        <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
+            
+            <!-- Editor panel - mobile optimized -->
+            <section class="w-full lg:w-1/2 glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col">
+                <!-- Header responsive -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2">
+                    <h2 class="text-responsive-lg font-semibold text-brand-700 dark:text-brand-200 flex items-center gap-2">
+                        <i data-feather="edit-3" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        Editor de Código
+                    </h2>
+                    <span id="charCount" class="self-start sm:self-auto bg-brand-400/80 text-white text-xs font-semibold rounded px-2 py-1">
+                        0 caracteres
+                    </span>
+                </div>
+                
+                <!-- Textarea responsive -->
+                <textarea id="codeEditor"
+                    class="w-full h-32 sm:h-40 md:h-48 lg:h-56 p-3 sm:p-4 mb-3 sm:mb-4 rounded-lg sm:rounded-xl bg-white/40 dark:bg-brand-800/60 text-brand-700 dark:text-brand-200 text-sm sm:text-base shadow-inner border border-white/20 dark:border-brand-600/30 focus-ring resize-none transition-smooth"
+                    placeholder="Pega aquí tu código HTML, Tailwind o Chakra…"></textarea>
+                
+                <!-- Buttons mobile-first layout -->
+                <div class="space-y-3">
+                    <!-- Primary actions -->
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                        <button id="testBtn" 
+                                class="btn-touch flex-1 bg-gradient-to-r from-brand-500 to-brand-300 text-white font-bold py-3 px-4 rounded-lg sm:rounded-xl shadow-lg hover:brightness-110 hover:scale-105 transition-smooth focus-ring">
+                            Probar componente
+                        </button>
+                        <button id="clearBtn" 
+                                class="btn-touch flex-1 bg-white/80 dark:bg-brand-600/70 border-2 border-brand-400 text-brand-700 dark:text-brand-200 font-semibold py-3 px-4 rounded-lg sm:rounded-xl shadow hover:bg-brand-100/80 dark:hover:bg-brand-500/80 transition-smooth focus-ring">
+                            Limpiar
+                        </button>
+                    </div>
+                    
+                    <!-- Example buttons -->
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                        <button id="tailwindExampleBtn" 
+                                class="btn-touch flex-1 bg-gradient-to-r from-brand-600 to-brand-400 text-white font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg shadow hover:brightness-110 transition-smooth focus-ring text-sm sm:text-base">
+                            🎨 Ejemplo Tailwind
+                        </button>
+                        <button id="chakraExampleBtn" 
+                                class="btn-touch flex-1 border-2 border-brand-400 bg-transparent text-brand-400 dark:text-brand-300 font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg hover:bg-brand-400/10 dark:hover:bg-brand-300/10 transition-smooth focus-ring text-sm sm:text-base">
+                            ⚛️ Ejemplo Chakra
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preview panel - mobile optimized -->
+            <section class="w-full lg:w-1/2 glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col">
+                <!-- Header responsive -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2">
+                    <h2 class="text-responsive-lg font-semibold text-brand-700 dark:text-brand-200 flex items-center gap-2">
+                        <i data-feather="eye" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        Vista Previa
+                    </h2>
+                    <span id="frameworkBadge" class="self-start sm:self-auto bg-brand-600/90 text-white text-xs font-semibold rounded px-2 py-1">
+                        Ningún framework
+                    </span>
+                </div>
+                
+                <!-- Preview area responsive -->
+                <div class="w-full flex-1 flex flex-col items-center justify-center min-h-[200px] sm:min-h-[250px] md:min-h-[300px] lg:min-h-[350px]">
+                    <div id="previewStatus" class="text-center w-full flex flex-col items-center justify-center p-4">
+                        <svg class="w-12 h-12 sm:w-14 sm:h-14 text-brand-300 mb-3 sm:mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <h3 class="text-lg sm:text-xl font-bold text-brand-700 dark:text-brand-200 mb-2">¡Listo para crear!</h3>
+                        <p class="text-sm sm:text-base text-brand-600/70 dark:text-brand-300/80 max-w-xs">
+                            Ingresa código en el editor para ver la magia aquí ✨
+                        </p>
+                    </div>
+                    <iframe id="previewFrame" 
+                            class="w-full mt-3 sm:mt-4 min-h-[120px] sm:min-h-[150px] rounded-lg border-0 shadow-inner bg-white/50 dark:bg-brand-800/60 transition-smooth hidden">
+                    </iframe>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer responsive -->
+    <footer class="w-full text-center py-3 sm:py-4 px-3">
+        <p class="text-xs sm:text-sm text-brand-700/70 dark:text-brand-200/70">
+            Hecho con ❤️ por 
+            <a href="https://anclora.tech" class="underline hover:text-brand-400 transition-colors" target="_blank" rel="noopener">
+                Anclora
+            </a>
+        </p>
+    </footer>
+
+    <!-- Loading overlay responsive -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="glass-card p-6 sm:p-8 rounded-xl text-center max-w-sm">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-brand-400 to-brand-200 rounded-full mx-auto mb-4 animate-pulse"></div>
+            <h3 class="text-lg sm:text-xl font-semibold text-brand-700 dark:text-brand-200 mb-2">Procesando...</h3>
+            <p class="text-sm sm:text-base text-brand-600 dark:text-brand-300">Generando vista previa</p>
+        </div>
+    </div>
+
+    <!-- Error modal responsive -->
+    <div id="errorModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="glass-card p-4 sm:p-6 rounded-xl max-w-md w-full">
+            <div class="flex items-center text-red-400 mb-4">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h3 class="text-base sm:text-lg font-semibold">Error en el código</h3>
+            </div>
+            <p id="errorMessage" class="text-sm sm:text-base text-brand-600 dark:text-brand-300 mb-4 sm:mb-6"></p>
+            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+                <button id="closeErrorModal" 
+                        class="btn-touch px-4 py-2 text-brand-600 dark:text-brand-400 hover:text-brand-800 dark:hover:text-brand-200 transition-colors focus-ring rounded">
+                    Cerrar
+                </button>
+                <button id="dismissErrorBtn" 
+                        class="btn-touch bg-gradient-to-r from-brand-500 to-brand-300 text-white px-4 py-2 rounded-lg hover:brightness-110 transition-smooth focus-ring">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript para tema y iconos -->
+    <script>
+        // Theme switcher mejorado
+        const themeBtn = document.getElementById('colorThemeBtn');
+        const iconTheme = document.getElementById('iconTheme');
+        
+        function setTheme(dark) {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            iconTheme.innerHTML = dark
+                ? '<svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293a8 8 0 01-11.314-11.314A8.001 8.001 0 0020 10a8.001 8.001 0 01-2.707 3.293z"/></svg>'
+                : '<svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-9h1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707"/></svg>';
+        }
+        
+        function toggleTheme() {
+            const dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+            setTheme(dark);
+            localStorage.setItem('anclora-theme', dark ? 'dark' : 'light');
+        }
+        
+        themeBtn.addEventListener('click', toggleTheme);
+        
+        // Cargar tema guardado o detectar preferencia del sistema
+        (function() {
+            const saved = localStorage.getItem('anclora-theme');
+            if (saved) {
+                setTheme(saved === 'dark');
+            } else {
+                setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+            }
+        })();
+        
+        // Cargar iconos Feather
+        feather.replace();
+        
+        // Ejemplos para los botones
+        const tailwindExample = `<div class="bg-gradient-to-r from-brand-400 via-brand-300 to-brand-200 p-6 rounded-xl text-white shadow-lg">
+  <h2 class="text-2xl font-bold mb-2">¡Hola desde Tailwind!</h2>
+  <p class="text-brand-100">Este es un ejemplo con los colores de Anclora</p>
+  <button class="mt-4 bg-white text-brand-600 px-4 py-2 rounded-lg font-medium hover:bg-brand-50 transition-colors">
+    Botón de ejemplo
+  </button>
+</div>`;
+
+        const chakraExample = `<div style="background: linear-gradient(90deg, #0AD1C8, #45DFB1); padding: 1.5rem; border-radius: 0.75rem; color: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+  <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">¡Hola desde Chakra!</h2>
+  <p style="color: rgba(255, 255, 255, 0.9);">Ejemplo con estilos inline</p>
+  <button style="margin-top: 1rem; background: white; color: #0B6477; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; border: none; cursor: pointer;">
+    Botón Chakra
+  </button>
+</div>`;
+
+        document.getElementById('tailwindExampleBtn').addEventListener('click', () => {
+            document.getElementById('codeEditor').value = tailwindExample;
+        });
+        
+        document.getElementById('chakraExampleBtn').addEventListener('click', () => {
+            document.getElementById('codeEditor').value = chakraExample;
+        });
+    </script>
+    
+    <!-- Tu app.js original -->
+    <script src="app.js"></script>
+</body>
+</html>
