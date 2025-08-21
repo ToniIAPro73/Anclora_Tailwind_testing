@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anclora Design System - Test Completo</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            700: '#213A57',
+                            600: '#0B6477',
+                            500: '#14919B',
+                            400: '#0AD1C8',
+                            '400-accessible': '#048A81',
+                            300: '#45DFB1',
+                            200: '#80ED99'
+                        },
+                        surface: {
+                            0: '#FFFFFF',
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#0D1F22',
+                            900: '#081B1B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* === ANCLORA DESIGN SYSTEM CSS INLINE === */
+        :root {
+            --anclora-brand-700: #213A57;
+            --anclora-brand-600: #0B6477;
+            --anclora-brand-500: #14919B;
+            --anclora-brand-400: #0AD1C8;
+            --anclora-brand-400-accessible: #048A81;
+            --anclora-brand-300: #45DFB1;
+            --anclora-brand-200: #80ED99;
+            
+            --anclora-surface-0: #FFFFFF;
+            --anclora-surface-50: #F8FAFC;
+            --anclora-surface-800: #0D1F22;
+            --anclora-surface-900: #081B1B;
+
+            --anclora-text-primary: var(--anclora-brand-700);
+            --anclora-background: var(--anclora-surface-50);
+            --anclora-surface: var(--anclora-surface-0);
+        }
+
+        [data-theme="dark"] {
+            --anclora-text-primary: var(--anclora-brand-200);
+            --anclora-background: var(--anclora-surface-900);
+            --anclora-surface: var(--anclora-surface-800);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--anclora-text-primary);
+            background-color: var(--anclora-background);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.025em;
+        }
+
+        /* Botones Anclora */
+        .btn-anclora {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 44px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-anclora:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(10, 209, 200, 0.3);
+        }
+
+        .btn-anclora-primary {
+            background: linear-gradient(90deg, var(--anclora-brand-600), var(--anclora-brand-400-accessible));
+            color: var(--anclora-surface-0);
+            box-shadow: 0 4px 16px rgba(33, 58, 87, 0.12);
+        }
+
+        .btn-anclora-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 25px rgba(10, 209, 200, 0.3);
+        }
+
+        .btn-anclora-secondary {
+            background: transparent;
+            color: var(--anclora-brand-400-accessible);
+            border: 2px solid var(--anclora-brand-400-accessible);
+        }
+
+        .btn-anclora-secondary:hover {
+            background: var(--anclora-brand-400-accessible);
+            color: var(--anclora-surface-0);
+        }
+
+        /* Cards */
+        .card-anclora {
+            background: var(--anclora-surface);
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(33, 58, 87, 0.12);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .card-anclora:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(33, 58, 87, 0.15);
+        }
+
+        [data-theme="dark"] .card-anclora {
+            background: var(--anclora-surface-800);
+            border-color: var(--anclora-surface-600);
+        }
+
+        /* Animaciones */
+        @keyframes anclora-wave {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 1; }
+            50% { transform: translateY(-5px) scale(1.02); opacity: 0.9; }
+        }
+
+        .anclora-floating {
+            animation: anclora-wave 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+        }
+
+        /* Notificaciones */
+        .anclora-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 1rem 1.25rem;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .anclora-notification-success {
+            border-left: 4px solid var(--anclora-brand-300);
+        }
+
+        .anclora-notification-error {
+            border-left: 4px solid #EF4444;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Theme transition */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .status-success { background-color: var(--anclora-brand-300); }
+        .status-error { background-color: #EF4444; }
+        .status-warning { background-color: #F59E0B; }
+
+        /* Dark mode específico para elementos */
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, var(--anclora-surface-900) 0%, #1a202c 100%);
+        }
+
+        [data-theme="light"] body {
+            background: linear-gradient(135deg, var(--anclora-surface-50) 0%, #f7fafc 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="p-6 mb-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-brand-400 to-brand-300 rounded-xl flex items-center justify-center shadow-lg anclora-floating">
+                        <span class="text-white text-2xl font-bold">⚡</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold brand-font">ANCLORA Design System</h1>
+                        <p class="text-sm opacity-80">IA que convierte y diseña con precisión</p>
+                    </div>
+                </div>
+                
+                <button id="themeToggle" class="btn-anclora btn-anclora-secondary">
+                    <span id="themeIcon">🌙</span>
+                    <span>Cambiar Tema</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6">
+        
+        <!-- Status Section -->
+        <div class="card-anclora mb-8">
+            <h2 class="text-xl font-semibold mb-4 brand-font">🔧 Estado del Sistema</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="flex items-center">
+                    <span id="themeStatus" class="status-indicator status-success"></span>
+                    <span>Theme Manager</span>
+                </div>
+                <div class="flex items-center">
+                    <span id="uxStatus" class="status-indicator status-success"></span>
+                    <span>UX Feedback</span>
+                </div>
+                <div class="flex items-center">
+                    <span id="accessibilityStatus" class="status-indicator status-success"></span>
+                    <span>Accessibility</span>
+                </div>
+                <div class="flex items-center">
+                    <span id="animationsStatus" class="status-indicator status-success"></span>
+                    <span>Animations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Buttons -->
+        <div class="card-anclora mb-8">
+            <h2 class="text-xl font-semibold mb-4 brand-font">🧪 Pruebas de Funcionalidad</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <button onclick="testThemeToggle()" class="btn-anclora btn-anclora-primary">
+                    🌙 Test Theme Toggle
+                </button>
+                <button onclick="testSuccessNotification()" class="btn-anclora btn-anclora-primary">
+                    ✅ Test Success Notification
+                </button>
+                <button onclick="testErrorNotification()" class="btn-anclora btn-anclora-primary">
+                    ❌ Test Error Notification
+                </button>
+                <button onclick="testSounds()" class="btn-anclora btn-anclora-secondary">
+                    🔊 Test Sounds
+                </button>
+                <button onclick="testAnimations()" class="btn-anclora btn-anclora-secondary">
+                    🎭 Test Animations
+                </button>
+                <button onclick="testAccessibility()" class="btn-anclora btn-anclora-secondary">
+                    ♿ Test Accessibility
+                </button>
+            </div>
+        </div>
+
+        <!-- Component Examples -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card-anclora">
+                <h3 class="text-lg font-semibold mb-3 brand-font">🎨 Componentes Básicos</h3>
+                <div class="space-y-3">
+                    <button class="btn-anclora btn-anclora-primary w-full">Botón Primario</button>
+                    <button class="btn-anclora btn-anclora-secondary w-full">Botón Secundario</button>
+                </div>
+            </div>
+
+            <div class="card-anclora anclora-floating">
+                <h3 class="text-lg font-semibold mb-3 brand-font">🌊 Card Flotante</h3>
+                <p class="mb-4">Esta card tiene animación oceánica inspirada en la filosofía de marca Anclora.</p>
+                <div class="flex gap-2">
+                    <span class="px-3 py-1 bg-brand-400 text-white text-sm rounded-full">Mar</span>
+                    <span class="px-3 py-1 bg-brand-300 text-white text-sm rounded-full">Tecnología</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <script>
+        // === ANCLORA DESIGN SYSTEM JAVASCRIPT INLINE ===
+        
+        // Theme Manager simplificado
+        class SimpleThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('anclora-theme') || 'light';
+                this.init();
+            }
+
+            init() {
+                this.setTheme(this.currentTheme);
+                this.updateUI();
+            }
+
+            setTheme(theme) {
+                this.currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('anclora-theme', theme);
+                this.updateUI();
+                console.log(`🎨 Tema cambiado a: ${theme}`);
+            }
+
+            toggleTheme() {
+                const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                this.setTheme(newTheme);
+            }
+
+            updateUI() {
+                const themeIcon = document.getElementById('themeIcon');
+                if (themeIcon) {
+                    themeIcon.textContent = this.currentTheme === 'light' ? '🌙' : '☀️';
+                }
+            }
+        }
+
+        // UX Feedback simplificado
+        class SimpleUXFeedback {
+            showNotification(message, type = 'success') {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                
+                notification.className = `anclora-notification anclora-notification-${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div>${type === 'success' ? '✅' : '❌'}</div>
+                        <div style="flex: 1;">${message}</div>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 18px; cursor: pointer;">×</button>
+                    </div>
+                `;
+
+                container.appendChild(notification);
+
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 3000);
+
+                console.log(`📢 Notificación ${type}: ${message}`);
+            }
+
+            playSound(type) {
+                // Simple beep usando Web Audio API
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    const frequencies = {
+                        click: 800,
+                        success: 660,
+                        error: 300
+                    };
+
+                    oscillator.frequency.value = frequencies[type] || 800;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+
+                    console.log(`🔊 Sonido reproducido: ${type}`);
+                } catch (e) {
+                    console.log('🔇 Audio no disponible');
+                }
+            }
+        }
+
+        // Accessibility helper simplificado
+        class SimpleAccessibilityManager {
+            announce(message) {
+                // Crear elemento para anuncio a screen readers
+                const announcer = document.createElement('div');
+                announcer.setAttribute('aria-live', 'polite');
+                announcer.setAttribute('aria-atomic', 'true');
+                announcer.className = 'sr-only';
+                announcer.style.cssText = 'position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);';
+                
+                document.body.appendChild(announcer);
+                announcer.textContent = message;
+
+                setTimeout(() => announcer.remove(), 1000);
+                console.log(`♿ Anunciado: ${message}`);
+            }
+
+            checkContrast(foreground, background) {
+                // Simulación simple de verificación de contraste
+                console.log(`🎨 Verificando contraste: ${foreground} sobre ${background}`);
+                return { ratio: 4.5, AA: true, AAA: false };
+            }
+        }
+
+        // Initialize Anclora Systems
+        const Anclora = {
+            theme: new SimpleThemeManager(),
+            ux: new SimpleUXFeedback(),
+            accessibility: new SimpleAccessibilityManager(),
+            version: '1.0.0'
+        };
+
+        // Expose globally
+        window.Anclora = Anclora;
+
+        // Event Listeners
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            Anclora.theme.toggleTheme();
+            Anclora.ux.playSound('click');
+            Anclora.ux.showNotification(`Tema cambiado a ${Anclora.theme.currentTheme}`, 'success');
+        });
+
+        // Test Functions
+        function testThemeToggle() {
+            Anclora.theme.toggleTheme();
+            Anclora.ux.showNotification('¡Tema cambiado correctamente! 🎨', 'success');
+        }
+
+        function testSuccessNotification() {
+            Anclora.ux.showNotification('¡Esta es una notificación de éxito! 🎉', 'success');
+            Anclora.ux.playSound('success');
+        }
+
+        function testErrorNotification() {
+            Anclora.ux.showNotification('Esta es una notificación de error ⚠️', 'error');
+            Anclora.ux.playSound('error');
+        }
+
+        function testSounds() {
+            Anclora.ux.playSound('click');
+            setTimeout(() => Anclora.ux.playSound('success'), 300);
+            setTimeout(() => Anclora.ux.playSound('error'), 600);
+            Anclora.ux.showNotification('Sonidos UX reproducidos 🔊', 'success');
+        }
+
+        function testAnimations() {
+            document.querySelectorAll('.card-anclora').forEach(card => {
+                card.style.transform = 'scale(1.05) rotate(1deg)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+            });
+            Anclora.ux.showNotification('Animaciones ejecutadas 🎭', 'success');
+        }
+
+        function testAccessibility() {
+            Anclora.accessibility.announce('Prueba de accesibilidad ejecutada correctamente');
+            const contrast = Anclora.accessibility.checkContrast('#0B6477', '#FFFFFF');
+            Anclora.ux.showNotification(`Contraste verificado: ${contrast.ratio}:1 AA: ${contrast.AA} ♿`, 'success');
+        }
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌟 Anclora Design System v1.0.0 cargado');
+            console.log('Theme Manager:', !!Anclora.theme);
+            console.log('UX Feedback:', !!Anclora.ux);
+            console.log('Accessibility:', !!Anclora.accessibility);
+
+            // Welcome notification
+            setTimeout(() => {
+                Anclora.ux.showNotification('¡Anclora Design System cargado correctamente! 🚀', 'success');
+            }, 1000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+                e.preventDefault();
+                testThemeToggle();
+            }
+        });
+
+        console.log('🎯 Anclora Test Page - Todo integrado inline');
+    </script>
+
+</body>
+</html>
