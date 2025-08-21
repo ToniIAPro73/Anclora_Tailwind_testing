@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester de Componentes Tailwind & Chakra UI - Edición Vibrante</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom': {
+                            'navy': '#213A57',
+                            'teal-dark': '#0B6477',
+                            'teal-mid': '#14919B', 
+                            'cyan': '#0AD1C8',
+                            'mint': '#45DFB1',
+                            'lime': '#80ED99'
+                        }
+                    },
+                    backgroundImage: {
+                        'hero': 'linear-gradient(135deg, #80ED99 0%, #0AD1C8 50%, #213A57 100%)',
+                        'header': 'linear-gradient(135deg, #213A57 0%, #45DFB1 100%)',
+                        'button': 'linear-gradient(135deg, #0AD1C8 0%, #45DFB1 100%)',
+                        'button-secondary': 'linear-gradient(135deg, #14919B 0%, #0B6477 100%)',
+                        'card-header': 'linear-gradient(135deg, #14919B 0%, #45DFB1 100%)'
+                    },
+                    boxShadow: {
+                        'glow-cyan': '0 0 20px rgba(10, 209, 200, 0.3)',
+                        'glow-mint': '0 0 20px rgba(69, 223, 177, 0.3)',
+                        'glow-lime': '0 0 20px rgba(128, 237, 153, 0.3)'
+                    },
+                    animation: {
+                        'border-flow': 'border-flow 3s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-hero min-h-screen">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container flex items-center justify-between">
+                <div class="header-title">
+                    <h1 class="text-white text-2xl font-bold drop-shadow-lg">
+                        ⚡ Tester de Componentes
+                    </h1>
+                    <p class="text-white/80 text-sm mt-1">Tailwind & Chakra UI - Edición Vibrante</p>
+                </div>
+                <div class="framework-indicator">
+                    <div id="frameworkBadge" class="framework-badge">
+                        <span class="badge-icon">🔍</span>
+                        <span class="badge-text">Ningún framework detectado</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="editor-layout">
+                    <!-- Panel Editor -->
+                    <div class="editor-panel">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <div class="header-content">
+                                    <h2 class="text-white font-bold text-lg">📝 Editor de Código</h2>
+                                    <div class="char-counter">
+                                        <span id="charCount">0</span> caracteres
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="code-editor-container">
+                                    <textarea 
+                                        id="codeEditor" 
+                                        class="code-textarea"
+                                        placeholder="¡Pega aquí tu código HTML con clases Tailwind o componentes Chakra UI!
+                                        
+🚀 Ejemplo rápido:
+<button class=&quot;bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-yellow-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200&quot;>
+  ¡Botón Mágico! ✨
+</button>"
+                                        spellcheck="false"
+                                    ></textarea>
+                                    <div class="syntax-highlight-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="button-group">
+                                    <button id="testBtn" class="btn-primary">
+                                        <span class="btn-icon">⚡</span>
+                                        Probar Componente
+                                    </button>
+                                    <button id="clearBtn" class="btn-outline">
+                                        <span class="btn-icon">🗑️</span>
+                                        Limpiar
+                                    </button>
+                                </div>
+                                <div class="button-group examples-group">
+                                    <button id="tailwindExampleBtn" class="btn-secondary">
+                                        <span class="btn-icon">🎨</span>
+                                        Ejemplo Tailwind
+                                    </button>
+                                    <button id="chakraExampleBtn" class="btn-secondary">
+                                        <span class="btn-icon">⚛️</span>
+                                        Ejemplo Chakra
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel Vista Previa -->
+                    <div class="preview-panel">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <div class="header-content">
+                                    <h2 class="text-white font-bold text-lg">👁️ Vista Previa</h2>
+                                    <div class="status-indicator">
+                                        <span id="previewStatus" class="preview-status">Listo</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="previewFrame" class="preview-frame">
+                                    <div class="preview-placeholder">
+                                        <div class="placeholder-content">
+                                            <div class="placeholder-icon">
+                                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-float">
+                                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                                </svg>
+                                            </div>
+                                            <h3 class="text-xl font-bold text-white mb-2">¡Listo para crear!</h3>
+                                            <p class="text-white/70">Ingresa código en el editor para ver la magia aquí ✨</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal hidden">
+            <div class="modal-backdrop">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            <span class="error-icon">⚠️</span>
+                            <h3>Error de Código</h3>
+                        </div>
+                        <button id="closeErrorModal" class="modal-close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="errorMessage">Ha ocurrido un error al procesar el código.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="dismissErrorBtn" class="btn-primary btn-sm">
+                            <span class="btn-icon">👍</span>
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <p class="loading-text">Procesando tu código...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
