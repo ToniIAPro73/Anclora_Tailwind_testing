@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anclora Design System - Component Tester v1.0.0</title>
+    <meta name="description" content="Tester de componentes del sistema de diseño Anclora - IA que convierte y diseña con precisión">
+    <meta name="theme-color" content="#F8FAFC">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Anclora Design System">
+    <meta property="og:description" content="Sistema completo de diseño accesible y moderno">
+    <meta property="og:url" content="https://anclora.design">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Anclora Design System">
+    <meta property="twitter:description" content="IA que convierte y diseña con precisión">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            700: '#213A57',
+                            600: '#0B6477',
+                            500: '#14919B',
+                            400: '#0AD1C8',
+                            '400-accessible': '#048A81',
+                            300: '#45DFB1',
+                            200: '#80ED99'
+                        },
+                        surface: {
+                            0: '#FFFFFF',
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#0D1F22',
+                            900: '#081B1B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Anclora Design System -->
+    <link rel="stylesheet" href="src/css/anclora-complete.css">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .brand-font { font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.025em; }
+        
+        /* Layout específico del tester */
+        .tester-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 140px);
+        }
+        
+        @media (max-width: 768px) {
+            .tester-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        
+        .code-panel, .preview-panel {
+            border: 2px solid theme('colors.surface.200');
+            border-radius: 1rem;
+            background: theme('colors.surface.0');
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        [data-theme="dark"] .code-panel,
+        [data-theme="dark"] .preview-panel {
+            background: theme('colors.surface.800');
+            border-color: theme('colors.surface.700');
+        }
+        
+        .panel-header {
+            background: linear-gradient(90deg, theme('colors.brand.600'), theme('colors.brand.500'));
+            color: white;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .panel-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #codeEditor {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 1.25rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            background: transparent;
+            color: theme('colors.brand.700');
+            resize: none;
+        }
+        
+        [data-theme="dark"] #codeEditor {
+            color: theme('colors.brand.200');
+        }
+        
+        .editor-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid theme('colors.surface.200');
+            background: theme('colors.surface.50');
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        [data-theme="dark"] .editor-footer {
+            background: theme('colors.surface.700');
+            border-color: theme('colors.surface.600');
+        }
+        
+        #previewFrame {
+            flex: 1;
+            border: none;
+            background: white;
+            min-height: 300px;
+        }
+        
+        .preview-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: theme('colors.surface.500');
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .framework-badge {
+            background: linear-gradient(90deg, theme('colors.brand.400'), theme('colors.brand.300'));
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .char-count {
+            color: theme('colors.surface.500');
+            font-size: 0.875rem;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+        
+        .loading-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, theme('colors.brand.400'), theme('colors.brand.300'));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error modal */
+        .error-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+        
+        .error-content {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        [data-theme="dark"] .error-content {
+            background: theme('colors.surface.800');
+            color: theme('colors.brand.200');
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Skip link styles */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: theme('colors.brand.700');
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            z-index: 10001;
+            font-weight: 600;
+            transition: top 0.2s ease;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-brand-400 via-brand-300 to-brand-200 min-h-screen theme-transition">
+    
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    
+    <!-- Accessibility Announcements -->
+    <div id="announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    <div id="urgent-announcements" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+    
+    <!-- Header -->
+    <header class="relative z-10" role="banner">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <!-- Logo y Título -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-brand-400 to-brand-300 rounded-xl flex items-center justify-content-center shadow-lg anclora-floating">
+                        <span class="text-white text-2xl font-bold" aria-hidden="true">⚡</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white brand-font">
+                            ANCLORA Design System
+                        </h1>
+                        <p class="text-brand-100 text-sm">
+                            Component Tester v1.0.0 - IA que convierte y diseña con precisión
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="flex items-center gap-4" role="navigation" aria-label="Navegación principal">
+                    <button 
+                        id="themeToggle" 
+                        class="btn-anclora btn-anclora-secondary bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        aria-label="Cambiar tema de color"
+                        title="Cambiar entre tema claro y oscuro">
+                        <i data-feather="sun" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="hidden sm:inline">Tema</span>
+                    </button>
+                    
+                    <a 
+                        href="docs/README.md" 
+                        class="btn-anclora btn-anclora-secondary bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <i data-feather="book-open" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="hidden sm:inline">Docs</span>
+                    </a>
+                    
+                    <a 
+                        href="examples/microinteractions-demo.html" 
+                        class="btn-anclora btn-anclora-secondary bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <i data-feather="zap" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="hidden sm:inline">Demo</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="container mx-auto px-6 pb-6" role="main">
+        
+        <!-- Quick Actions -->
+        <section class="mb-6" aria-labelledby="quick-actions-title">
+            <h2 id="quick-actions-title" class="sr-only">Acciones rápidas</h2>
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button 
+                    id="testBtn" 
+                    class="btn-anclora btn-anclora-primary"
+                    aria-describedby="test-btn-help">
+                    <i data-feather="play" class="w-4 h-4" aria-hidden="true"></i>
+                    Probar Componente
+                </button>
+                <div id="test-btn-help" class="sr-only">Procesa el código del editor y muestra el resultado en la vista previa</div>
+                
+                <button 
+                    id="clearBtn" 
+                    class="btn-anclora btn-anclora-secondary"
+                    aria-describedby="clear-btn-help">
+                    <i data-feather="trash-2" class="w-4 h-4" aria-hidden="true"></i>
+                    Limpiar
+                </button>
+                <div id="clear-btn-help" class="sr-only">Limpia todo el contenido del editor</div>
+                
+                <button 
+                    id="tailwindExampleBtn" 
+                    class="btn-anclora btn-anclora-secondary"
+                    aria-describedby="tailwind-btn-help">
+                    <i data-feather="wind" class="w-4 h-4" aria-hidden="true"></i>
+                    Ejemplo Tailwind
+                </button>
+                <div id="tailwind-btn-help" class="sr-only">Carga un ejemplo de componente usando Tailwind CSS</div>
+                
+                <button 
+                    id="chakraExampleBtn" 
+                    class="btn-anclora btn-anclora-secondary"
+                    aria-describedby="chakra-btn-help">
+                    <i data-feather="circle" class="w-4 h-4" aria-hidden="true"></i>
+                    Ejemplo Chakra
+                </button>
+                <div id="chakra-btn-help" class="sr-only">Carga un ejemplo de componente usando Chakra UI</div>
+            </div>
+        </section>
+        
+        <!-- Main Tester Layout -->
+        <div class="tester-layout">
+            
+            <!-- Code Panel -->
+            <section class="code-panel" aria-labelledby="code-panel-title">
+                <header class="panel-header">
+                    <i data-feather="code" class="w-5 h-5" aria-hidden="true"></i>
+                    <h2 id="code-panel-title">Editor de Código</h2>
+                </header>
+                
+                <div class="panel-content">
+                    <label for="codeEditor" class="sr-only">
+                        Editor de código HTML/CSS/JavaScript. Escribe aquí tu componente para probarlo.
+                    </label>
+                    <textarea
+                        id="codeEditor"
+                        placeholder="Pega aquí tu código HTML con clases de Tailwind o Chakra UI... ✨"
+                        aria-describedby="editor-help"
+                        spellcheck="false"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        data-gramm="false"></textarea>
+                    
+                    <div id="editor-help" class="sr-only">
+                        Este editor soporta HTML, CSS y JavaScript. Puedes usar Tailwind CSS y Chakra UI. 
+                        El contenido se procesa automáticamente después de escribir.
+                    </div>
+                    
+                    <footer class="editor-footer">
+                        <div class="flex items-center gap-3">
+                            <span id="charCount" class="char-count" aria-live="polite">0 caracteres</span>
+                            <span id="frameworkBadge" class="framework-badge">Ningún framework detectado</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 text-sm text-surface-500">
+                            <i data-feather="info" class="w-4 h-4" aria-hidden="true"></i>
+                            <span>Actualización automática habilitada</span>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            
+            <!-- Preview Panel -->
+            <section class="preview-panel" aria-labelledby="preview-panel-title">
+                <header class="panel-header">
+                    <i data-feather="eye" class="w-5 h-5" aria-hidden="true"></i>
+                    <h2 id="preview-panel-title">Vista Previa</h2>
+                    <div class="ml-auto">
+                        <span id="previewStatus" class="text-brand-100 text-sm">
+                            ⚡ Escribiendo código...
+                        </span>
+                    </div>
+                </header>
+                
+                <div class="panel-content">
+                    <iframe 
+                        id="previewFrame"
+                        title="Vista previa del componente"
+                        sandbox="allow-scripts allow-same-origin"
+                        style="display: none;"
+                        aria-describedby="preview-help"></iframe>
+                    
+                    <div id="previewEmpty" class="preview-empty">
+                        <div class="anclora-floating mb-4">
+                            <i data-feather="code" class="w-16 h-16 text-surface-400" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-surface-700 mb-2">
+                            ¡Listo para crear!
+                        </h3>
+                        <p class="text-surface-500 mb-4">
+                            Ingresa código en el editor para ver la magia aquí ✨
+                        </p>
+                        <div class="flex flex-col gap-2 text-sm text-surface-400">
+                            <div class="flex items-center gap-2">
+                                <i data-feather="check" class="w-4 h-4" aria-hidden="true"></i>
+                                <span>Soporte completo para Tailwind CSS</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-feather="check" class="w-4 h-4" aria-hidden="true"></i>
+                                <span>Compatible con Chakra UI</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-feather="check" class="w-4 h-4" aria-hidden="true"></i>
+                                <span>Actualización en tiempo real</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="preview-help" class="sr-only">
+                        Esta área muestra la vista previa en vivo de tu componente. 
+                        El contenido se actualiza automáticamente cuando escribes código válido.
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+        
+        <!-- Features Info -->
+        <section class="mt-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6" aria-labelledby="features-title">
+            <h2 id="features-title" class="text-xl font-semibold text-white mb-4 brand-font">
+                🎯 Características del Sistema
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i data-feather="smartphone" class="w-6 h-6 text-white" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="font-semibold text-white">Mobile-first</h3>
+                    <p class="text-brand-100 text-sm">Responsive perfecto</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i data-feather="moon" class="w-6 h-6 text-white" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="font-semibold text-white">Dark Mode</h3>
+                    <p class="text-brand-100 text-sm">Temas automáticos</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i data-feather="users" class="w-6 h-6 text-white" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="font-semibold text-white">WCAG 2.2 AA</h3>
+                    <p class="text-brand-100 text-sm">100% accesible</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i data-feather="zap" class="w-6 h-6 text-white" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="font-semibold text-white">Microinteracciones</h3>
+                    <p class="text-brand-100 text-sm">50+ animaciones UX</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" role="dialog" aria-modal="true" aria-labelledby="loading-title">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i data-feather="zap" class="w-6 h-6 text-white" aria-hidden="true"></i>
+            </div>
+            <h3 id="loading-title" class="text-lg font-semibold mb-2">Procesando componente...</h3>
+            <p class="text-white/80">Aplicando la magia de Anclora ✨</p>
+        </div>
+    </div>
+    
+    <!-- Error Modal -->
+    <div id="errorModal" class="error-modal" role="dialog" aria-modal="true" aria-labelledby="error-title">
+        <div class="error-content">
+            <div class="flex items-start gap-3 mb-4">
+                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i data-feather="alert-circle" class="w-5 h-5 text-red-600" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 id="error-title" class="font-semibold text-lg text-red-800">Error al procesar</h3>
+                    <p id="errorMessage" class="text-red-700 mt-1"></p>
+                </div>
+            </div>
+            
+            <div class="flex gap-3 justify-end">
+                <button id="dismissErrorBtn" class="btn-anclora btn-anclora-secondary">
+                    Entendido
+                </button>
+                <button id="closeErrorModal" class="btn-anclora btn-anclora-primary">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-brand-700 text-white py-8 mt-12" role="contentinfo">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-4">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <span class="text-2xl" aria-hidden="true">⚡</span>
+                    <span class="brand-font font-bold text-lg">ANCLORA</span>
+                </div>
+                <p class="text-brand-200">Sistema de Diseño v1.0.0</p>
+            </div>
+            
+            <nav class="mb-4" aria-label="Enlaces del pie de página">
+                <ul class="flex justify-center gap-6 text-sm">
+                    <li><a href="docs/README.md" class="text-brand-300 hover:text-white transition-colors">Documentación</a></li>
+                    <li><a href="docs/accessibility-guide.md" class="text-brand-300 hover:text-white transition-colors">Accesibilidad</a></li>
+                    <li><a href="examples/microinteractions-demo.html" class="text-brand-300 hover:text-white transition-colors">Demo</a></li>
+                    <li><a href="https://github.com/anclora/design-system" class="text-brand-300 hover:text-white transition-colors">GitHub</a></li>
+                </ul>
+            </nav>
+            
+            <p class="text-brand-300 text-sm">
+                Hecho con ❤️ por el equipo Anclora - IA que convierte y diseña con precisión
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="src/js/anclora-complete.js"></script>
+    
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+        
+        // Additional initialization specific to the tester
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Update preview empty state visibility
+            function updatePreviewEmptyState() {
+                const previewFrame = document.getElementById('previewFrame');
+                const previewEmpty = document.getElementById('previewEmpty');
+                const previewStatus = document.getElementById('previewStatus');
+                
+                if (previewFrame.style.display === 'none') {
+                    previewEmpty.style.display = 'flex';
+                    previewStatus.textContent = '⚡ Escribiendo código...';
+                } else {
+                    previewEmpty.style.display = 'none';
+                    previewStatus.textContent = '✅ Componente renderizado';
+                }
+            }
+            
+            // Override the tester's updatePreview method to handle empty state
+            const originalUpdatePreview = Anclora.tester.updatePreview.bind(Anclora.tester);
+            Anclora.tester.updatePreview = function(html) {
+                originalUpdatePreview(html);
+                updatePreviewEmptyState();
+            };
+            
+            // Override the tester's clearEditor method
+            const originalClearEditor = Anclora.tester.clearEditor.bind(Anclora.tester);
+            Anclora.tester.clearEditor = function() {
+                originalClearEditor();
+                updatePreviewEmptyState();
+            };
+            
+            // Welcome message with delay
+            setTimeout(() => {
+                if (Anclora.ux) {
+                    Anclora.ux.showNotification(
+                        '¡Bienvenido al Anclora Component Tester! 🎯 Prueba componentes con todas las funcionalidades del sistema.',
+                        'success',
+                        {
+                            duration: 5000,
+                            position: 'bottom-right'
+                        }
+                    );
+                }
+            }, 1500);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + Enter: Test component
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('testBtn').click();
+                    if (Anclora.accessibility) {
+                        Anclora.accessibility.announce('Componente procesado con atajo de teclado');
+                    }
+                }
+                
+                // Ctrl/Cmd + K: Clear editor
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('clearBtn').click();
+                }
+                
+                // Ctrl/Cmd + 1: Load Tailwind example
+                if ((e.ctrlKey || e.metaKey) && e.key === '1') {
+                    e.preventDefault();
+                    document.getElementById('tailwindExampleBtn').click();
+                }
+                
+                // Ctrl/Cmd + 2: Load Chakra example
+                if ((e.ctrlKey || e.metaKey) && e.key === '2') {
+                    e.preventDefault();
+                    document.getElementById('chakraExampleBtn').click();
+                }
+            });
+            
+            // Add keyboard shortcut info to announcements
+            setTimeout(() => {
+                if (Anclora.accessibility) {
+                    Anclora.accessibility.announce(
+                        'Atajos de teclado disponibles: Ctrl+Enter para probar componente, Ctrl+K para limpiar, Ctrl+1 y Ctrl+2 para ejemplos'
+                    );
+                }
+            }, 3000);
+            
+            console.log('🎯 Anclora Component Tester v1.0.0 initialized successfully');
+        });
+    </script>
+    
+</body>
+</html>
