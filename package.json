@@ -1,122 +1,17 @@
 {
   "name": "@anclora/design-system",
   "version": "1.0.0",
-  "description": "Sistema de diseño completo de Anclora - IA que convierte y diseña con precisión",
-  "main": "dist/anclora-complete.js",
-  "style": "dist/anclora-complete.css",
-  "author": "Anclora Team",
-  "license": "MIT",
-  "homepage": "https://anclora.design",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/anclora/design-system.git"
-  },
-  "keywords": [
-    "design-system",
-    "ui-components", 
-    "tailwindcss",
-    "accessibility",
-    "microinteractions",
-    "responsive-design",
-    "dark-mode",
-    "anclora",
-    "component-tester"
-  ],
+  "description": "Sistema de diseño completo de Anclora",
   "scripts": {
-    "dev": "concurrently \"npm run css:watch\" \"npm run js:watch\" \"npm run serve\"",
-    "build": "npm run css:build && npm run js:build",
-    "css:build": "postcss src/css/anclora-complete.css -o dist/anclora-complete.css --env production",
-    "css:watch": "postcss src/css/anclora-complete.css -o dist/anclora-complete.css --watch",
-    "css:minify": "cssnano dist/anclora-complete.css dist/anclora.min.css",
-    "js:build": "webpack --mode production",
-    "js:watch": "webpack --mode development --watch",
-    "js:minify": "terser dist/anclora-complete.js -o dist/anclora.min.js --compress --mangle",
-    "serve": "live-server --port=3000 --host=localhost --open=/index.html",
-    "test": "npm run test:accessibility && npm run test:performance",
-    "test:accessibility": "axe-core --browser chrome --include 'main' ./index.html",
-    "test:performance": "lighthouse --chrome-flags=\"--headless\" --output=json --output-path=./reports/lighthouse.json ./index.html",
-    "lint:css": "stylelint \"src/css/**/*.css\"",
-    "lint:js": "eslint \"src/js/**/*.js\"",
-    "format": "prettier --write \"src/**/*.{js,css,html,md}\"",
-    "validate": "npm run lint:css && npm run lint:js && npm run test:accessibility",
-    "release": "npm run validate && npm run build && npm run css:minify && npm run js:minify",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o docs/storybook",
-    "docs:build": "vitepress build docs",
-    "docs:dev": "vitepress dev docs",
-    "analyze": "webpack-bundle-analyzer dist/stats.json"
+    "dev": "concurrently \"npm run css:watch\" \"npm run serve\"",
+    "build": "npm run css:build",
+    "css:build": "tailwindcss -i src/css/anclora-complete.css -o dist/anclora-complete.css --minify",
+    "css:watch": "tailwindcss -i src/css/anclora-complete.css -o dist/anclora-complete.css --watch",
+    "serve": "live-server --port=3000 --host=localhost --open=/index.html"
   },
-  "files": [
-    "dist/",
-    "src/",
-    "config/",
-    "docs/",
-    "examples/",
-    "README.md",
-    "LICENSE"
-  ],
   "devDependencies": {
-    "@postcss/cli": "^10.1.0",
-    "@storybook/addon-a11y": "^7.4.0",
-    "@storybook/addon-essentials": "^7.4.0",
-    "@storybook/html": "^7.4.0",
-    "@tailwindcss/forms": "^0.5.6",
-    "@tailwindcss/typography": "^0.5.10",
-    "autoprefixer": "^10.4.15",
-    "axe-core": "^4.8.1",
-    "concurrently": "^8.2.0",
-    "cssnano": "^6.0.1",
-    "eslint": "^8.49.0",
-    "eslint-config-prettier": "^9.0.0",
-    "lighthouse": "^11.0.0",
-    "live-server": "^1.2.2",
-    "postcss": "^8.4.29",
-    "postcss-import": "^15.1.0",
-    "prettier": "^3.0.3",
-    "stylelint": "^15.10.3",
-    "stylelint-config-standard": "^34.0.0",
     "tailwindcss": "^3.3.3",
-    "terser": "^5.19.4",
-    "vitepress": "^1.0.0-rc.20",
-    "webpack": "^5.88.2",
-    "webpack-bundle-analyzer": "^4.9.1",
-    "webpack-cli": "^5.1.4"
-  },
-  "dependencies": {
-    "feather-icons": "^4.29.1"
-  },
-  "peerDependencies": {
-    "tailwindcss": ">=3.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://npm.anclora.design"
-  },
-  "anclora": {
-    "version": "1.0.0",
-    "build": "production",
-    "features": [
-      "responsive-design",
-      "dark-mode", 
-      "accessibility-wcag22-aa",
-      "microinteractions",
-      "component-tester",
-      "design-tokens",
-      "performance-optimized"
-    ],
-    "compatibility": {
-      "tailwindcss": "^3.3.0",
-      "browsers": ["Chrome 90+", "Firefox 88+", "Safari 14+", "Edge 90+"],
-      "mobile": ["iOS 14+", "Android 8+"]
-    }
+    "concurrently": "^8.2.0",
+    "live-server": "^1.2.2"
   }
 }
